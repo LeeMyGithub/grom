@@ -29,6 +29,40 @@ func getDB(c *CMDConfig) (*sql.DB, error) {
 	return db, nil
 }
 
+func getTableNames(c *CMDConfig) ([]string, error) {
+	db, err := getDB(c)
+	if err != nil {
+		return nil, err
+	}
+	querySQL := "SELECT TABLE_NAME FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ? and TABLE_TYPE ='base table'"
+	rows, err := db.Query(querySQL, c.Database, c.Table)
+	if err != nil {
+		fmt.Println("db query err:", err)
+		return nil, err
+	}
+	if rows != nil {
+		defer rows.Close()
+	} else {
+		return nil, errors.New("no rows returned")
+	}
+	talbeNames = make([]string, 0)
+	for rows.Next() {
+		var (
+			// COLUMN_NAME, IS_NULLABLE, DATA_TYPE, COLUMN_TYPE, COLUMN_KEY, EXTRA, COLUMN_COMMENT
+			tn string
+		)
+		err = rows.Scan(&tn)
+		if err != nil {
+			fmt.Println("rows scan err:", err)
+			return nil, err
+
+		}
+		name := tn
+		talbeNames = append(talbeNames, name)
+	}
+	return talbeNames, nil
+}
+
 // getColumnInfos returns the details of columns.
 func getColumnInfos(c *CMDConfig) ([]*ColumnInfo, error) {
 	if columnInfos != nil {

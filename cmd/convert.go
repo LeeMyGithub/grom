@@ -13,6 +13,7 @@ import (
 )
 
 var (
+	all         string
 	filePath    string
 	packageName string
 	structName  string
@@ -48,6 +49,15 @@ var convertCmd = &cobra.Command{
 	Run: convertFunc,
 }
 
+var convertCmdAll = &cobra.Command{
+	Use:   "convert",
+	Short: "Convert mysql table fields to golang model structure",
+	Long:  "Convert mysql table fields to golang model structure by information_schema.columns and information_schema.statistics",
+	Example: "  grom convert -n -a ./grom.json\n" +
+		"  grom convert -a -H localhost -P 3306 -u user -p password -d database -t table -e INITIALISM,FIELD_COMMENT,JSON_TAG,GORM_V2_TAG --package PACKAGE_NAME --struct STRUCT_NAME",
+	Run: convertAllFunc,
+}
+
 func init() {
 	convertCmd.Flags().StringVar(&packageName, "package", "", "the package name of the converted model structure")
 	convertCmd.Flags().StringVar(&structName, "struct", "", "the struct name of the converted model structure")
@@ -59,8 +69,23 @@ func init() {
 	convertCmd.Flags().StringVarP(&database, "database", "d", "", "the database of mysql")
 	convertCmd.Flags().StringVarP(&table, "table", "t", "", "the table of mysql")
 	convertCmd.Flags().StringSliceVarP(&enable, "enable", "e", nil, "enable services (must in [INITIALISM,FIELD_COMMENT,SQL_NULL,GUREGU_NULL,JSON_TAG,XML_TAG,GORM_TAG,XORM_TAG,BEEGO_TAG,GOROSE_TAG,GORM_V2_TAG])")
-
+	convertCmd.Flags().StringVarP(&all, "all", "a", "", "the command all table convert")
 	rootCmd.AddCommand(convertCmd)
+	rootCmd.AddCommand(convertCmdAll)
+}
+
+func convertAllFunc(cmd *cobra.Command, args []string) {
+	config, err := getCmdConfig()
+	if err != nil {
+		return
+	}
+
+	s, err := util.ConvertAllTable(config)
+	if err != nil {
+		return
+	}
+
+	fmt.Println(s)
 }
 
 func convertFunc(cmd *cobra.Command, args []string) {
