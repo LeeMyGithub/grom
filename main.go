@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/sliveryou/grom/cmd"
+	"github.com/LeeMyGithub/grom/cmd"
 )
 
 func main() {
