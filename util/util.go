@@ -6,8 +6,32 @@ import (
 	"unicode"
 )
 
+func ConvertAllTable(cc CMDConfig) (string, error) {
+	if cc.Table == "" {
+		fmt.Println("table is nil to all table convert")
+		names, err := getTableNames(&cc)
+		if err != nil {
+			fmt.Println("get table  err:", err)
+			return "", err
+		}
+		for _, name := range names {
+			cc.Table = name
+			cc.StructName = name
+			s, err := ConvertTable(cc)
+			if err != nil {
+				fmt.Println("get column info slice err:", err)
+			}
+
+			fmt.Println(s)
+		}
+	}
+	return "ConvertAllTable", nil
+
+}
+
 // ConvertTable converts mysql table fields to golang model structure by command config.
 func ConvertTable(cc CMDConfig) (string, error) {
+
 	cis, err := getColumnInfos(&cc)
 	if err != nil {
 		fmt.Println("get column info slice err:", err)
