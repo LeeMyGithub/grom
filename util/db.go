@@ -34,8 +34,8 @@ func getTableNames(c *CMDConfig) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	querySQL := "SELECT TABLE_NAME FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ? and TABLE_TYPE ='base table'"
-	rows, err := db.Query(querySQL, c.Database, c.Table)
+	querySQL := "SELECT TABLE_NAME FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ? and TABLE_TYPE = ?"
+	rows, err := db.Query(querySQL, c.Database, "BASE TABLE")
 	if err != nil {
 		fmt.Println("db query err:", err)
 		return nil, err
@@ -47,19 +47,17 @@ func getTableNames(c *CMDConfig) ([]string, error) {
 	}
 	talbeNames = make([]string, 0)
 	for rows.Next() {
-		var (
-			// COLUMN_NAME, IS_NULLABLE, DATA_TYPE, COLUMN_TYPE, COLUMN_KEY, EXTRA, COLUMN_COMMENT
-			tn string
-		)
+		var tn string
 		err = rows.Scan(&tn)
 		if err != nil {
-			fmt.Println("rows scan err:", err)
-			return nil, err
 
+			return nil, err
 		}
 		name := tn
+
 		talbeNames = append(talbeNames, name)
 	}
+
 	return talbeNames, nil
 }
 

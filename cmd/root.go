@@ -11,9 +11,7 @@ var rootCmd = &cobra.Command{
 	Use:   "grom",
 	Short: "Get golang model structure by mysql information schema",
 	Example: "  grom generate -n ./grom.json\n" +
-		"  grom convert -n ./grom.json\n" +
-		" grom generate -n -a ./grom.json\n" +
-		"grom convert -a -n ./grom.json",
+		"  grom convert -n ./grom.json\n",
 }
 
 // Execute executes the root command and its subcommands.
