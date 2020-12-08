@@ -11,9 +11,9 @@ var (
 	columnInfos []*ColumnInfo
 	indexInfos  []*IndexInfo
 
-	tableIndexes      []string
-	tableUniques      []string
-	talbeNames        []string
+	tableIndexes []string
+	tableUniques []string
+
 	commonInitialisms = map[string]struct{}{
 		"ACL":   {},
 		"API":   {},
