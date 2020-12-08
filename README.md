@@ -12,14 +12,22 @@
 Grom is a powerful command line tool that can convert mysql table fields to golang model structure. 
 Its full name is golang relational object mapping (GROM).
 
+fork下来未提交pr，自己先研究着
 ## Installation
 
 Download package by using:
 
 ```shell script
+原著作者
 $ go get -u github.com/sliveryou/grom
+此版本
+$ go get -u github.com/LeeMyGithub/grom
 ```
 
+
+将作者的sliveryou更换为LeeMyGithub 可为此版本 此版本更新一下小功能
+增加功能
+json 配置中表名TABLE 不填写则为填写的数据库进行映射 struct名称与表明一致
 To build from source code, you need [Go environment](https://golang.org/dl/) (1.14 or newer) and use the following commands:
 
 ```shell script
@@ -236,5 +244,8 @@ func (a *API) TableName() string {
     return "api"
 }
 ```
+增加功能
+json 配置中表名TABLE 不填写则为填写的数据库进行映射 struct名称与表明一致
 
 3. Enjoy yourself!
+
