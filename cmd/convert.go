@@ -23,6 +23,7 @@ var (
 	database    string
 	table       string
 	enable      []string
+	outdir      string
 
 	validServices = map[string]struct{}{
 		"INITIALISM":    {},
@@ -72,13 +73,16 @@ func convertFunc(cmd *cobra.Command, args []string) {
 		if err != nil {
 			return
 		}
+
 		fmt.Println(s)
 		return
 	}
 	s, err := util.ConvertTable(config)
 	if err != nil {
+
 		return
 	}
+
 	fmt.Println(s)
 }
 
@@ -123,7 +127,9 @@ func getCmdConfig() (util.CMDConfig, error) {
 	if table != "" {
 		config.Table = table
 	}
-
+	if outdir != "" {
+		config.OutDir = outdir
+	}
 	if len(enable) != 0 {
 		for _, v := range enable {
 			service := strings.ToUpper(v)

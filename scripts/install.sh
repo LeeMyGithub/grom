@@ -4,7 +4,7 @@ file_path=$(
     pwd
 )/..
 
-main_path="github.com/sliveryou/grom/cmd"
+main_path="github.com/LeeMyGithub/grom/cmd"
 go_version=$(go version | awk '{ print $3 }')
 build_time=$(date "+%Y-%m-%d %H:%M:%S")
 git_commit=$(git rev-parse --short=10 HEAD)

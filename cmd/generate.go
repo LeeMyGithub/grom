@@ -55,6 +55,7 @@ func generateFileInfo() string {
 			Password: "password",
 			Database: "database",
 			Table:    "table",
+			OutDir:   "outdir",
 		},
 		PackageName:        "package_name",
 		StructName:         "struct_name",

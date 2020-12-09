@@ -121,6 +121,7 @@ type DBConfig struct {
 	Password string `json:"password"`
 	Database string `json:"database"`
 	Table    string `json:"table"`
+	OutDir   string `json:"outdir"`
 }
 
 // StructField represents the field of the generated model structure.

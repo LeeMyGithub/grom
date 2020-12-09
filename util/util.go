@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"unicode"
 )
@@ -27,6 +28,22 @@ func ConvertAllTable(cc CMDConfig) (string, error) {
 	}
 	return "ConvertAllTable", nil
 
+}
+func saveResultToFile(s string, name string) {
+	f, err := os.Create(name)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer f.Close()
+
+	_, err = f.Write([]byte(s))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("\nwrite output in:", name)
 }
 
 // ConvertTable converts mysql table fields to golang model structure by command config.
@@ -84,8 +101,12 @@ func ConvertTable(cc CMDConfig) (string, error) {
 		}
 		fields = append(fields, &field)
 	}
+	s, err := generateCode(&cc, fields)
+	if err == nil {
+		saveResultToFile(s, cc.OutDir+"/"+cc.StructName+".go")
+	}
 
-	return generateCode(&cc, fields)
+	return s, err
 }
 
 // convertDataType converts the mysql data type to golang data type.
